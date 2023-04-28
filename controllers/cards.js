@@ -23,16 +23,23 @@ module.exports.deleteCard = (req, res) => {
   const { cardId } = req.params;
 
   Card.findByIdAndDelete(cardId)
-    .then((deletedCard) => {
-      if (!deletedCard) {
-        return res.status(404).send({
-          message: `Карточка с указанным _id:${cardId} не найдена.`,
-        });
+    .then((card) => {
+      if (!card) {
+        res
+          .status(404)
+          .send({ message: `Карточка с указанным _id:${cardId} не найдена` });
+      } else {
+        res.send({ card });
       }
-      return res.send({ data: deletedCard });
     })
-    .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию" });
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(400).send({
+          message: "Переданы некорректные данные для удаления карточки.",
+        });
+      } else {
+        res.status(500).send({ message: "Ошибка по умолчанию" });
+      }
     });
 };
 
