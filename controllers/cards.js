@@ -101,25 +101,23 @@ module.exports.dislikeCard = async (req, res) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
-  if (!cardId) {
-    return res.status(400).send({
-      message: "Переданы некорректные данные для снятии лайка.",
+  Card.findByIdAndUpdate(cardId, { $pull: { likes: userId } }, { new: true })
+    .then((card) => {
+      if (!card) {
+        res
+          .status(404)
+          .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
+      } else {
+        res.send({ card });
+      }
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(400).send({
+          message: "Переданы некорректные данные для снятии лайка",
+        });
+      } else {
+        res.status(500).send({ message: "Что-то на серверной стороне..." });
+      }
     });
-  }
-
-  try {
-    const updatedCard = await Card.findByIdAndUpdate(
-      cardId,
-      { $pull: { likes: userId } },
-      { new: true }
-    );
-    if (!updatedCard) {
-      return res
-        .status(404)
-        .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
-    }
-    return res.send(updatedCard);
-  } catch (err) {
-    return res.status(500).send({ message: "Ошибка по умолчанию." });
-  }
 };
