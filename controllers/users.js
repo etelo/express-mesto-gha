@@ -43,8 +43,12 @@ module.exports.findUserById = (req, res) => {
       }
       return res.status(200).send(user);
     })
-    .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные' });
+      } else {
+        res.status(500).send({ message: 'Ошибка по умолчанию.' });
+      }
     });
 };
 
