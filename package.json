@@ -17,8 +17,8 @@
     "ключевое_слово_2"
   ],
   "author": {
-    "name": "автор",
-    "email": "адрес_электронной_почты"
+    "name": "Alex",
+    "email": "pralig@yandex.ru"
   },
   "license": "ISC",
   "devDependencies": {
