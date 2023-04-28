@@ -4,18 +4,18 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  if (!name || !link) {
-    return res
-      .status(400)
-      .send({ message: "Переданы некорректные данные при создании карточки." });
-  }
-
   return Card.create({ name, link, owner })
     .then((card) => {
       res.status(201).send({ data: card });
     })
-    .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        res.status(400).send({
+          message: "Переданы некорректные данные при создании карточки.",
+        });
+      } else {
+        res.status(500).send({ message: "Ошибка по умолчанию." });
+      }
     });
 };
 
@@ -72,27 +72,29 @@ module.exports.likeCard = async (req, res) => {
   const userId = req.user._id;
   const { cardId } = req.params;
 
-  if (!cardId) {
-    return res.status(400).send({
-      message: "Переданы некорректные данные для постановки лайка.",
+  Card.findByIdAndUpdate(
+    cardId,
+    { $addToSet: { likes: userId } },
+    { new: true }
+  )
+    .then((card) => {
+      if (!card) {
+        res
+          .status(404)
+          .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
+      } else {
+        res.send({ card });
+      }
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        res.status(400).send({
+          message: "Переданы некорректные данные для постановки лайка",
+        });
+      } else {
+        res.status(500).send({ message: "Ошибка по умолчанию." });
+      }
     });
-  }
-
-  try {
-    const updatedCard = await Card.findByIdAndUpdate(
-      cardId,
-      { $addToSet: { likes: userId } },
-      { new: true }
-    );
-    if (!updatedCard) {
-      return res
-        .status(404)
-        .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
-    }
-    return res.send(updatedCard);
-  } catch (err) {
-    return res.status(500).send({ message: "Ошибка по умолчанию." });
-  }
 };
 
 module.exports.dislikeCard = async (req, res) => {
