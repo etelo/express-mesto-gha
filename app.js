@@ -21,11 +21,13 @@ app.use((req, res, next) => {
   req.user = {
     _id: "644b8f771ec26db9b6823c11", // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
-
   next();
 });
 
 app.use(express.json());
-app.use(userRouter, cardRouter);
+app.use('/', userRouter, cardRouter);
+app.use('*', (req, res) => {
+  res.status(404).send({ message: 'Такой страницы не существует' });
+});
 
 app.listen(3000);
