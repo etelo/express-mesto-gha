@@ -9,14 +9,14 @@ const {
 
 const userRouter = express.Router();
 
-userRouter.get("/users", findUser);
+userRouter.get("/", findUser);
 
-userRouter.get("/users/:userId", findUserById);
+userRouter.get("/:userId", findUserById);
 
-userRouter.post("/users", createUser);
+userRouter.post("/", createUser);
 
-userRouter.patch("/users/me", updateUserProfile);
+userRouter.patch("/me", updateUserProfile);
 
-userRouter.patch("/users/me/avatar", updateUserAvatar);
+userRouter.patch("/me/avatar", updateUserAvatar);
 
 module.exports = userRouter;

@@ -10,16 +10,16 @@ const {
 
 const cardRouter = express.Router();
 
-cardRouter.get("/cards", findCards);
+cardRouter.get("/", findCards);
 
-cardRouter.get("/cards/:cardId", findCardById);
+cardRouter.get("/:cardId", findCardById);
 
-cardRouter.post("/cards", createCard);
+cardRouter.post("/", createCard);
 
-cardRouter.delete("/cards/:cardId", deleteCard);
+cardRouter.delete("/:cardId", deleteCard);
 
-cardRouter.put("/cards/:cardId/likes", likeCard);
+cardRouter.put("/:cardId/likes", likeCard);
 
-cardRouter.delete("/cards/:cardId/likes", dislikeCard);
+cardRouter.delete("/:cardId/likes", dislikeCard);
 
 module.exports = cardRouter;
