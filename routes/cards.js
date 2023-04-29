@@ -8,18 +8,18 @@ const {
   deleteCard,
 } = require("../controllers/cards");
 
-const router = express.Router();
+const cardRouter = express.Router();
 
-router.get("/cards", findCards);
+cardRouter.get("/cards", findCards);
 
-router.get("/cards/:cardId", findCardById);
+cardRouter.get("/cards/:cardId", findCardById);
 
-router.post("/cards", createCard);
+cardRouter.post("/cards", createCard);
 
-router.delete("/cards/:cardId", deleteCard);
+cardRouter.delete("/cards/:cardId", deleteCard);
 
-router.put("/cards/:cardId/likes", likeCard);
+cardRouter.put("/cards/:cardId/likes", likeCard);
 
-router.delete("/cards/:cardId/likes", dislikeCard);
+cardRouter.delete("/cards/:cardId/likes", dislikeCard);
 
-module.exports = router;
+module.exports = cardRouter;

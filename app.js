@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRouter = require("./routes/users");
-const cardRouter = require("./routes/cards");
+const router = require("./routes/index");
 
 const app = express();
 
@@ -19,15 +18,13 @@ mongoose
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "644b8f771ec26db9b6823c11", // вставьте сюда _id созданного в предыдущем пункте пользователя
+    // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: "644b8f771ec26db9b6823c11",
   };
   next();
 });
 
 app.use(express.json());
-app.use('/', userRouter, cardRouter);
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Такой страницы не существует' });
-});
+app.use(router);
 
 app.listen(3000);

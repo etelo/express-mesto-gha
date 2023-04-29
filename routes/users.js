@@ -7,16 +7,16 @@ const {
   updateUserAvatar,
 } = require("../controllers/users");
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get("/users", findUser);
+userRouter.get("/users", findUser);
 
-router.get("/users/:userId", findUserById);
+userRouter.get("/users/:userId", findUserById);
 
-router.post("/users", createUser);
+userRouter.post("/users", createUser);
 
-router.patch("/users/me", updateUserProfile);
+userRouter.patch("/users/me", updateUserProfile);
 
-router.patch("/users/me/avatar", updateUserAvatar);
+userRouter.patch("/users/me/avatar", updateUserAvatar);
 
-module.exports = router;
+module.exports = userRouter;

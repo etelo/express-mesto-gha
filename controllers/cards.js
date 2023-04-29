@@ -1,4 +1,11 @@
 const Card = require("../models/card");
+const {
+  HTTP_STATUS_NOT_FOUND,
+  HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_INTERNAL_SERVER_ERROR,
+  HTTP_STATUS_CREATED,
+  HTTP_STATUS_OK,
+} = require("../utils/constants");
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
@@ -6,15 +13,17 @@ module.exports.createCard = (req, res) => {
 
   return Card.create({ name, link, owner })
     .then((card) => {
-      res.status(201).send({ data: card });
+      res.status(HTTP_STATUS_CREATED).send({ data: card });
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(HTTP_STATUS_BAD_REQUEST).send({
           message: "Переданы некорректные данные при создании карточки.",
         });
       } else {
-        res.status(500).send({ message: "Ошибка по умолчанию." });
+        res
+          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+          .send({ message: "Произошла ошибка на сервере." });
       }
     });
 };
@@ -26,7 +35,7 @@ module.exports.deleteCard = (req, res) => {
     .then((card) => {
       if (!card) {
         res
-          .status(404)
+          .status(HTTP_STATUS_NOT_FOUND)
           .send({ message: `Карточка с указанным _id:${cardId} не найдена` });
       } else {
         res.send({ card });
@@ -34,27 +43,32 @@ module.exports.deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        res.status(400).send({
+        res.status(HTTP_STATUS_BAD_REQUEST).send({
           message: "Переданы некорректные данные для удаления карточки.",
         });
       } else {
-        res.status(500).send({ message: "Ошибка по умолчанию" });
+        res
+          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+          .send({ message: "Произошла ошибка на сервере." });
       }
     });
 };
 
 module.exports.findCards = (req, res) => {
   Card.find({})
+    .populate(["owner", "likes"])
     .then((cards) => {
-      res.status(200).send(cards);
+      res.status(HTTP_STATUS_OK).send(cards);
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        res.status(400).send({
+        res.status(HTTP_STATUS_BAD_REQUEST).send({
           message: "Переданы некорректные данные.",
         });
       } else {
-        res.status(500).send({ message: "Ошибка по умолчанию." });
+        res
+          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+          .send({ message: "Произошла ошибка на сервере." });
       }
     });
 };
@@ -64,14 +78,16 @@ module.exports.findCardById = (req, res) => {
   Card.findById(cardId)
     .then((card) => {
       if (!card) {
-        return res.status(404).send({
+        return res.status(HTTP_STATUS_NOT_FOUND).send({
           message: `Карточка с указанным _id:${cardId} не найдена.`,
         });
       }
-      return res.status(200).send(card);
+      return res.status(HTTP_STATUS_OK).send(card);
     })
     .catch(() => {
-      res.status(500).send({ message: "Ошибка по умолчанию." });
+      res
+        .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .send({ message: "Произошла ошибка на сервере." });
     });
 };
 
@@ -87,7 +103,7 @@ module.exports.likeCard = async (req, res) => {
     .then((card) => {
       if (!card) {
         res
-          .status(404)
+          .status(HTTP_STATUS_NOT_FOUND)
           .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
       } else {
         res.send({ card });
@@ -95,11 +111,13 @@ module.exports.likeCard = async (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        res.status(400).send({
+        res.status(HTTP_STATUS_BAD_REQUEST).send({
           message: "Переданы некорректные данные для постановки лайка",
         });
       } else {
-        res.status(500).send({ message: "Ошибка по умолчанию." });
+        res
+          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+          .send({ message: "Произошла ошибка на сервере." });
       }
     });
 };
@@ -112,7 +130,7 @@ module.exports.dislikeCard = async (req, res) => {
     .then((card) => {
       if (!card) {
         res
-          .status(404)
+          .status(HTTP_STATUS_NOT_FOUND)
           .send({ message: `Передан несуществующий _id:${cardId} карточки.` });
       } else {
         res.send({ card });
@@ -120,11 +138,13 @@ module.exports.dislikeCard = async (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        res.status(400).send({
+        res.status(HTTP_STATUS_BAD_REQUEST).send({
           message: "Переданы некорректные данные для снятии лайка",
         });
       } else {
-        res.status(500).send({ message: "Что-то на серверной стороне..." });
+        res
+          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+          .send({ message: "Произошла ошибка на сервере." });
       }
     });
 };
