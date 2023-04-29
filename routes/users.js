@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   createUser,
-  findUser,
+  findUsers,
   findUserById,
   updateUserProfile,
   updateUserAvatar,
@@ -9,7 +9,7 @@ const {
 
 const userRouter = express.Router();
 
-userRouter.get("/", findUser);
+userRouter.get("/", findUsers);
 
 userRouter.get("/:userId", findUserById);
 

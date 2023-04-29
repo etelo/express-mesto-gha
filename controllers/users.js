@@ -26,18 +26,13 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-module.exports.findUser = (req, res) => {
+module.exports.findUsers = (req, res) => {
   User.find({})
     .then((users) => {
       res.status(HTTP_STATUS_OK).send(users);
     })
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        return res.status(HTTP_STATUS_BAD_REQUEST).send({
-          message: "Переданы некорректные данные при создании пользователя.",
-        });
-      }
-      return res
+    .catch(() => {
+      res
         .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
         .send({ message: "Произошла ошибка на сервере." });
     });
@@ -56,7 +51,9 @@ module.exports.findUserById = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        res.status(HTTP_STATUS_BAD_REQUEST).send({ message: "Переданы некорректные данные" });
+        res
+          .status(HTTP_STATUS_BAD_REQUEST)
+          .send({ message: "Переданы некорректные данные" });
       } else {
         res
           .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)

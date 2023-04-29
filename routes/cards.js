@@ -2,7 +2,6 @@ const express = require("express");
 const {
   createCard,
   findCards,
-  findCardById,
   likeCard,
   dislikeCard,
   deleteCard,
@@ -11,8 +10,6 @@ const {
 const cardRouter = express.Router();
 
 cardRouter.get("/", findCards);
-
-cardRouter.get("/:cardId", findCardById);
 
 cardRouter.post("/", createCard);
 

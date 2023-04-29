@@ -60,36 +60,30 @@ module.exports.findCards = (req, res) => {
     .then((cards) => {
       res.status(HTTP_STATUS_OK).send(cards);
     })
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        res.status(HTTP_STATUS_BAD_REQUEST).send({
-          message: "Переданы некорректные данные.",
-        });
-      } else {
-        res
-          .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
-          .send({ message: "Произошла ошибка на сервере." });
-      }
-    });
-};
-
-module.exports.findCardById = (req, res) => {
-  const { cardId } = req.params;
-  Card.findById(cardId)
-    .then((card) => {
-      if (!card) {
-        return res.status(HTTP_STATUS_NOT_FOUND).send({
-          message: `Карточка с указанным _id:${cardId} не найдена.`,
-        });
-      }
-      return res.status(HTTP_STATUS_OK).send(card);
-    })
     .catch(() => {
       res
         .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
         .send({ message: "Произошла ошибка на сервере." });
     });
 };
+
+// module.exports.findCardById = (req, res) => {
+//   const { cardId } = req.params;
+//   Card.findById(cardId)
+//     .then((card) => {
+//       if (!card) {
+//         return res.status(HTTP_STATUS_NOT_FOUND).send({
+//           message: `Карточка с указанным _id:${cardId} не найдена.`,
+//         });
+//       }
+//       return res.status(HTTP_STATUS_OK).send(card);
+//     })
+//     .catch(() => {
+//       res
+//         .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+//         .send({ message: "Произошла ошибка на сервере." });
+//     });
+// };
 
 module.exports.likeCard = async (req, res) => {
   const userId = req.user._id;
