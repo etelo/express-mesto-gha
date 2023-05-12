@@ -81,7 +81,7 @@ module.exports.likeCard = async (req, res, next) => {
         );
       }
 
-      res.send({ card });
+      res.status(200).send({ card });
     })
     .catch((err) => {
       if (err.name === "CastError") {
@@ -107,7 +107,7 @@ module.exports.dislikeCard = async (req, res, next) => {
           `Передан несуществующий _id:${cardId} карточки.`
         );
       }
-      res.send({ card });
+      res.status(200).send({ card });
     })
     .catch((err) => {
       if (err.name === "CastError") {
