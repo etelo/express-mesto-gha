@@ -1,19 +1,20 @@
 const express = require("express");
+
 const {
-  createUser,
   findUsers,
   findUserById,
   updateUserProfile,
   updateUserAvatar,
+  getUserMe,
 } = require("../controllers/users");
 
 const userRouter = express.Router();
 
+userRouter.get('/me', getUserMe);
+
 userRouter.get("/", findUsers);
 
 userRouter.get("/:userId", findUserById);
-
-userRouter.post("/", createUser);
 
 userRouter.patch("/me", updateUserProfile);
 
