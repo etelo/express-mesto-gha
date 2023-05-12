@@ -5,7 +5,7 @@ const router = require("./routes/index");
 const app = express();
 
 const { login, createUser } = require("./controllers/users");
-const auth = require('./middlewares/auth');
+const auth = require("./middlewares/auth");
 
 app.post("/signin", login);
 app.post("/signup", createUser);
