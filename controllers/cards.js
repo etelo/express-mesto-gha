@@ -7,7 +7,6 @@ module.exports.createCard = async (req, res, next) => {
   try {
     const { name, link } = req.body;
     const owner = req.user._id;
-
     if (!name || !link) {
       throw new ValidationError('Поля "name" и "link" должны быть заполнены');
     }
