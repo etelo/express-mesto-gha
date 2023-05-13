@@ -15,19 +15,9 @@ exports.signUpValidation = celebrate({
       .messages({
         "any.required": 'Поле "email" должно быть заполнено',
       }),
-    password: Joi.string().required().messages({
-      "string.min": 'Минимальная длина поля "password" - 2',
-      "string.max": 'Максимальная длина поля "password" - 30',
-      "any.required": 'Поле "password" должно быть заполнено',
-    }),
-    name: Joi.string().min(2).max(30).messages({
-      "string.min": 'Минимальная длина поля "name" - 2',
-      "string.max": 'Максимальная длина поля "name" - 30',
-    }),
-    about: Joi.string().min(2).max(30).messages({
-      "string.min": 'Минимальная длина поля "about" - 2',
-      "string.max": 'Максимальная длина поля "about" - 30',
-    }),
+    password: Joi.string().required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
     avatar: Joi.string().custom((value, helpers) => {
       if (validator.isURL(value)) {
         return value;
@@ -46,18 +36,8 @@ exports.signInValidation = celebrate({
 
 exports.patchUserMeValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30)
-      .messages({
-        "string.min": 'Минимальная длина поля "name" - 2',
-        "string.max": 'Максимальная длина поля "name" - 30',
-        "any.required": 'Поле "password" должно быть заполнено',
-      }),
-    about: Joi.string().required().min(2).max(30)
-      .messages({
-        "string.min": 'Минимальная длина поля "about" - 2',
-        "string.max": 'Максимальная длина поля "about" - 30',
-        "any.required": 'Поле "password" должно быть заполнено',
-      }),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
   }),
 });
 
@@ -89,12 +69,7 @@ exports.validateCardId = celebrate({
 
 exports.createCardValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30)
-      .messages({
-        "string.min": 'Минимальная длина поля "name" - 2',
-        "string.max": 'Максимальная длина поля "name" - 30',
-        "any.required": 'Поле "password" должно быть заполнено',
-      }),
+    name: Joi.string().required().min(2).max(30),
     link: Joi.string()
       .required()
       .custom((value, helpers) => {
@@ -108,16 +83,12 @@ exports.createCardValidation = celebrate({
 
 exports.userIdValidation = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string()
-      .length(24)
-      .hex()
-      .required()
-      .messages({ "any.required": 'Поле "id" должно быть заполнено' }),
+    userId: Joi.string().length(24).hex().required(),
   }),
 });
 
 exports.validateId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().hex().length(24),
+    userId: Joi.string().length(24).hex().required(),
   }),
 });

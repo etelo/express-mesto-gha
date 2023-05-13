@@ -86,20 +86,39 @@ module.exports.findUserById = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError(
-          `Пользователь по указанному _id:${userId} не найден.`
-        );
+        const error = new NotFoundError("Пользователь с таким id не найден");
+        return next(error);
       }
-      res.status(200).send(user);
+      return res.status(200).send({ user });
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new ValidationError("Невалидный id"));
-      } else {
-        next(err);
+        const error = new NotFoundError("Некорректный id");
+        return next(error);
       }
+      return next(err);
     });
 };
+
+// module.exports.findUserById = (req, res, next) => {
+//   const { userId } = req.params;
+//   User.findById(userId)
+//     .then((user) => {
+//       if (!user) {
+//         throw new NotFoundError(
+//           `Пользователь по указанному _id:${userId} не найден.`
+//         );
+//       }
+//       res.status(200).send(user);
+//     })
+//     .catch((err) => {
+//       if (err.name === "CastError") {
+//         next(new ValidationError("Невалидный id"));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 module.exports.updateUserProfile = async (req, res, next) => {
   const { name, about } = req.body;
