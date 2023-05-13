@@ -11,6 +11,7 @@ const {
 const {
   patchUserMeValidation,
   patchUserAvatarValidation,
+  validateId,
 } = require("../middlewares/validator");
 
 const userRouter = express.Router();
@@ -19,7 +20,7 @@ userRouter.get("/me", getUserMe);
 
 userRouter.get("/", findUsers);
 
-userRouter.get("/:userId", findUserById);
+userRouter.get("/:userId", validateId, findUserById);
 
 userRouter.patch("/me", patchUserMeValidation, updateUserProfile);
 

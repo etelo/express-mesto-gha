@@ -12,7 +12,9 @@ module.exports.getUserMe = (req, res, next) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        const error = new NotFoundError(`Пользователь по указанному _id:${userId} не найден.`);
+        const error = new NotFoundError(
+          `Пользователь по указанному _id:${userId} не найден.`
+        );
         next(error);
       }
       res.status(200).send({ user });
@@ -88,7 +90,7 @@ module.exports.findUserById = (req, res, next) => {
           `Пользователь по указанному _id:${userId} не найден.`
         );
       }
-      return res.status(200).send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === "CastError") {
