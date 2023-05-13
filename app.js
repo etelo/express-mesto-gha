@@ -4,12 +4,13 @@ const { errors } = require("celebrate");
 const router = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 const auth = require("./middlewares/auth");
+const { signUpValidation, signInValidation } = require('./middlewares/validator');
 
 const app = express();
 app.use(express.json());
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.post("/signin", signInValidation, login);
+app.post("/signup", signUpValidation, createUser);
 app.use(auth);
 
 app.use(router);
