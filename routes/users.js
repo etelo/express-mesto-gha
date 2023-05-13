@@ -11,7 +11,6 @@ const {
 const {
   patchUserMeValidation,
   patchUserAvatarValidation,
-  userIdValidation,
 } = require("../middlewares/validator");
 
 const userRouter = express.Router();
