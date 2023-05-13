@@ -16,7 +16,7 @@ const {
 
 const userRouter = express.Router();
 
-userRouter.get("/me", userIdValidation, getUserMe);
+userRouter.get("/me", getUserMe);
 
 userRouter.get("/", findUsers);
 

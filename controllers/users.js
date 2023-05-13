@@ -6,21 +6,18 @@ const NotFoundError = require("../errors/not-found-error");
 const ValidationError = require("../errors/validation-error");
 const EmailError = require("../errors/email-error");
 
-module.exports.getUserMe = async (req, res, next) => {
+module.exports.getUserMe = (req, res, next) => {
   const userId = req.user._id;
 
-  try {
-    const user = await User.findById(userId);
-    if (user) {
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        const error = new NotFoundError(`Пользователь по указанному _id:${userId} не найден.`);
+        next(error);
+      }
       res.status(200).send({ user });
-    } else {
-      throw new NotFoundError(
-        `Пользователь по указанному _id:${userId} не найден.`
-      );
-    }
-  } catch (err) {
-    next(err);
-  }
+    })
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
