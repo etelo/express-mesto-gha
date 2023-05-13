@@ -2,7 +2,7 @@ const { celebrate, Joi } = require("celebrate");
 const validator = require("validator");
 const { ObjectId } = require("mongoose").Types;
 
-exports.signUpValidation = celebrate({
+exports.validateSignUp = celebrate({
   body: Joi.object().keys({
     email: Joi.string()
       .required()
@@ -27,21 +27,21 @@ exports.signUpValidation = celebrate({
   }),
 });
 
-exports.signInValidation = celebrate({
+exports.validateSignIn = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
 });
 
-exports.patchUserMeValidation = celebrate({
+exports.validateUpdateUserProfile = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(30),
   }),
 });
 
-exports.patchUserAvatarValidation = celebrate({
+exports.validateUpdateUserAvatar = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string()
       .required()
@@ -67,7 +67,7 @@ exports.validateCardId = celebrate({
   }),
 });
 
-exports.createCardValidation = celebrate({
+exports.validateCreateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string()
@@ -81,14 +81,8 @@ exports.createCardValidation = celebrate({
   }),
 });
 
-exports.userIdValidation = celebrate({
+exports.validateUserById = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().length(24).hex().required(),
-  }),
-});
-
-exports.validateId = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().length(24).hex().required(),
+    userId: Joi.string().hex().length(24),
   }),
 });

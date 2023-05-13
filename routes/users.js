@@ -9,9 +9,9 @@ const {
 } = require("../controllers/users");
 
 const {
-  patchUserMeValidation,
-  patchUserAvatarValidation,
-  validateId,
+  validateUpdateUserProfile,
+  validateUpdateUserAvatar,
+  validateUserById,
 } = require("../middlewares/validator");
 
 const userRouter = express.Router();
@@ -20,10 +20,10 @@ userRouter.get("/me", getUserMe);
 
 userRouter.get("/", findUsers);
 
-userRouter.get("/:userId", validateId, findUserById);
+userRouter.get("/:userId", validateUserById, findUserById);
 
-userRouter.patch("/me", patchUserMeValidation, updateUserProfile);
+userRouter.patch("/me", validateUpdateUserProfile, updateUserProfile);
 
-userRouter.patch("/me/avatar", patchUserAvatarValidation, updateUserAvatar);
+userRouter.patch("/me/avatar", validateUpdateUserAvatar, updateUserAvatar);
 
 module.exports = userRouter;
