@@ -59,8 +59,7 @@ module.exports.createUser = (req, res, next) => {
             avatar: newUser.avatar,
             email: newUser.email,
             _id: newUser._id,
-          })
-        )
+          }))
         .catch((err) => {
           if (err.code === 11000) {
             next(new EmailError("Данный email уже существует в базе данных"));
